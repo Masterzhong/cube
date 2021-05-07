@@ -13,9 +13,7 @@ class Game {
         this.createCube();
         this.cubeDown();
         this.cubeControl();
-        this.rgba = 0
-        this.rgbb = 10
-        this.rgbc = 20
+        
     }
     //初始化画布大小
     initSize(size) {
@@ -255,18 +253,62 @@ class Game {
             switch (e.key) {
                 case 'ArrowLeft':
                     this.clearCube(this.cube);
+                    let ableLeft = true
                     let min = Math.min(...this.cube.map(v => v[0]))
-                    if (min > 0) {
+                    //获取当前INDEX
+                    if(min<=0){
+                        ableLeft = false
+                    }
+                    if(this.totalCube.length>0){
+                        try{
+                            this.totalCube.forEach(y=>{
+                               this.cube.forEach(x=>{
+                                   if(y[1]==x[1]&&y[0]+this.cubeSize == x[0]){
+                                       console.log('找到了')
+                                       throw(true)
+                                   }
+                               })
+                            })
+                        }catch(result){
+                            ableLeft = false;
+                        } 
+                    }
+                         
+                          
+                    
+                    if(ableLeft){
                         this.cube.forEach(val => {
                             val[0] -= this.cubeSize
                         })
                     }
+                    
                     this.drawCube(this.cube);
                     break;
                 case 'ArrowRight':
                     this.clearCube(this.cube);
+                    let ableright = true
                     let max = Math.max(...this.cube.map(v => v[0]))
-                    if (max < this.cubeObj.width - this.cubeSize) {
+                   
+                    if (max >= this.cubeObj.width - this.cubeSize) {
+                        ableright = false
+                    }
+
+                    if(this.totalCube.length){
+                        try{
+                            this.totalCube.forEach(y=>{
+                               this.cube.forEach(x=>{
+                                   if(y[1]==x[1]&&y[0]-this.cubeSize == x[0]){
+                                       console.log('找到了')
+                                       throw(true)
+                                   }
+                               })
+                            })
+                        }catch(result){
+                            ableright = false;
+                        } 
+                    }
+
+                    if(ableright){
                         this.cube.forEach(val => {
                             val[0] += this.cubeSize
                         })
